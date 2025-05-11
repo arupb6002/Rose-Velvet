@@ -13,7 +13,6 @@
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
         }
-        
         body {
             background: #f8f9fa;
             min-height: 100vh;
@@ -22,7 +21,6 @@
             align-items: center;
             padding: 40px 20px;
         }
-        
         .container {
             width: 100%;
             max-width: 1000px;
@@ -30,20 +28,15 @@
             grid-template-columns: 1fr 1fr;
             gap: 40px;
         }
-        
         @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
+            .container { grid-template-columns: 1fr; }
         }
-        
         .contact-info, .contact-form {
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             padding: 40px;
         }
-        
         h1 {
             color: #2d3748;
             font-size: 28px;
@@ -51,33 +44,28 @@
             margin-bottom: 30px;
             text-align: center;
         }
-        
         h2 {
             color: #6c63ff;
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 20px;
         }
-        
         .info-item {
             margin-bottom: 20px;
             display: flex;
             align-items: flex-start;
         }
-        
         .info-item i {
             color: #6c63ff;
             margin-right: 12px;
             margin-top: 3px;
             font-size: 18px;
         }
-        
         .info-text {
             color: #4a5568;
             font-size: 15px;
             line-height: 1.5;
         }
-        
         .address {
             color: #4a5568;
             font-size: 15px;
@@ -85,11 +73,9 @@
             margin-bottom: 30px;
             white-space: pre-line;
         }
-        
         .form-group {
             margin-bottom: 20px;
         }
-        
         label {
             display: block;
             color: #4a5568;
@@ -97,7 +83,6 @@
             font-weight: 500;
             margin-bottom: 8px;
         }
-        
         input, textarea {
             width: 100%;
             padding: 12px 16px;
@@ -106,17 +91,14 @@
             font-size: 15px;
             transition: border-color 0.2s;
         }
-        
         input:focus, textarea:focus {
             outline: none;
             border-color: #6c63ff;
         }
-        
         textarea {
             min-height: 120px;
             resize: vertical;
         }
-        
         .submit-btn {
             background: #6c63ff;
             color: white;
@@ -129,33 +111,35 @@
             transition: background 0.2s ease;
             width: 100%;
         }
-        
         .submit-btn:hover {
             background: #5a52e0;
         }
-        
         .required:after {
             content: " *";
             color: #e53e3e;
         }
-        
         .developer-tag {
             margin-top: 40px;
             font-size: 13px;
             color: #718096;
             text-align: center;
         }
-        
         .developer-tag a {
             color: #6c63ff;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.2s ease;
         }
-        
         .developer-tag a:hover {
             color: #5a52e0;
             text-decoration: underline;
+        }
+        #successMessage {
+            display: none;
+            color: #6c63ff;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -199,11 +183,7 @@
         <div class="contact-form">
             <h2>Send Us a Message</h2>
             
-            <form id="contactForm" action="https://formsubmit.co/1arupborah1@gmail.com" method="POST">
-                <input type="hidden" name="_subject" value="New Contact Form Submission">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
-                
+            <form id="contactForm">
                 <div class="form-group">
                     <label for="name" class="required">Full Name</label>
                     <input type="text" id="name" name="name" required>
@@ -231,6 +211,10 @@
                 
                 <button type="submit" class="submit-btn">Send Message</button>
             </form>
+            
+            <div id="successMessage">
+                Message sent successfully! We'll contact you soon.
+            </div>
         </div>
     </div>
     
@@ -238,11 +222,30 @@
         Developed by <a href="https://borahdigitalsolutions.rf.gd" target="_blank">Borah Digital Solutions</a>
     </div>
 
+    <!-- EmailJS Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            // You can add form validation here if needed
-            // Form will submit to FormSubmit.co which will email you the details
+        // Initialize EmailJS with your User ID
+        emailjs.init("BPl4WekWAGX8AzDXB"); // Replace "user_YOUR_USER_ID" with your actual EmailJS User ID
+        
+        document.getElementById("contactForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            // Send form data using your Service ID and Template ID
+            emailjs.sendForm("service_3s7qqzj", "template_c8fyc65", this)
+                .then(function() {
+                    // Show success message
+                    document.getElementById("successMessage").style.display = "block";
+                    document.getElementById("contactForm").reset();
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(function() {
+                        document.getElementById("successMessage").style.display = "none";
+                    }, 5000);
+                }, function(error) {
+                    alert("Failed to send message. Please try again or contact us directly.");
+                });
         });
     </script>
 </body>
-</html>
+    </html>
